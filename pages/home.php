@@ -63,7 +63,7 @@ $galery = mysqli_query($conn, $query);
                     <div class="col-md-4">
                         <div class="card border-0 shadow h-100" style="max-height: 500px; min-height: 400px; overflow: hidden;">
                             <!-- Gambar Card -->
-                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row['image']); ?>" class="card-img-top" alt="<?php echo $row["event_name"] ?>" style="object-fit: cover; height: 200px;">
+                            <img src="<?php echo $row['image']; ?>" class="card-img-top" alt="<?php echo $row["event_name"] ?>" style="object-fit: cover; height: 200px;">
 
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title"><?php echo $row["event_name"] ?></h5>

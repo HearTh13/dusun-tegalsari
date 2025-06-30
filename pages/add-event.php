@@ -16,7 +16,6 @@
             $image = imagecreatefromjpeg($source);
         } elseif ($info['mime'] == 'image/png') {
             $image = imagecreatefrompng($source);
-            // konversi ke jpeg karena png tidak bisa dikompres dengan kualitas
             ob_start();
             imagejpeg($image, null, $quality);
             $compressed = ob_get_clean();
@@ -35,21 +34,41 @@
         $id = generateUuidV4();
         $event_name = $_POST['event_name'];
         $description = $_POST['description'];
-        $image = $_FILES['image']['tmp_name'];
+        $imageTmp = $_FILES['image']['tmp_name'];
         $owner = $_SESSION['owner'];
         $createdDateTime = date('Y-m-d H:i:s');
         $createdBy = $_SESSION['user_id'];
 
+        if (!empty($event_name) && !empty($description) && is_uploaded_file($imageTmp)) {
+            // Buat folder berdasarkan tahun/bulan
+            $year = date('Y');
+            $month = date('m');
+            $uploadDir = __DIR__ . "/../uploads/$year/$month";
+            $relativePath = "uploads/$year/$month";
 
-        if (!empty($event_name) && !empty($description) && is_uploaded_file($image)) {
-            $imageData = addslashes(compressImage($image)); 
-            $query = "INSERT INTO events (id, event_name, owner, image, description, created_date_time, created_by) VALUES ('$id', '$event_name', '$owner', '$imageData', '$description', '$createdDateTime', '$createdBy')";
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            // Nama unik
+            $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $filename = uniqid('img_', true) . '.' . $ext;
+            $savePath = "$uploadDir/$filename"; // path di server
+            $dbImagePath = "$relativePath/$filename"; // path disimpan di DB
+
+            // Simpan hasil kompres
+            $compressed = compressImage($imageTmp);
+            file_put_contents($savePath, $compressed);
+
+            // Simpan ke DB (hanya path-nya)
+            $query = "INSERT INTO events (id, event_name, owner, image, description, created_date_time, created_by) 
+                    VALUES ('$id', '$event_name', '$owner', '$dbImagePath', '$description', '$createdDateTime', '$createdBy')";
 
             if (mysqli_query($conn, $query)) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
                         Gambar berhasil ditambahkan.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>';
+                    </div>';
             } else {
                 $alert = '<div class="alert alert-danger" role="alert">Gagal menyimpan gambar: ' . mysqli_error($conn) . '</div>';
             }
