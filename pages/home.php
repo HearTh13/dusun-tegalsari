@@ -58,7 +58,7 @@ $products = mysqli_query($conn, $query);
                     </div>
                 </div>
             <?php else: ?>
-                <h2 class="text-success mb-4"><i class="bi bi-graph-up"></i> Acara</h2>
+                <h2 class="text-success mb-4"><i class="bi bi-calendar-event"></i> Acara</h2>
             <?php endif; ?>
             <div class="row g-4">
                 <?php while ($row = mysqli_fetch_assoc($events)) { ?>
@@ -163,7 +163,7 @@ $products = mysqli_query($conn, $query);
                     </div>
                 </div>
             <?php else: ?>
-                <h2 class="text-success mb-4"><i class="bi bi-graph-up"></i> Galeri</h2>
+                <h2 class="text-success mb-4"><i class="bi bi-images"></i> Galeri</h2>
             <?php endif; ?>
             <div class="row g-3">
                 <?php while ($row = mysqli_fetch_assoc($galery)) { ?>

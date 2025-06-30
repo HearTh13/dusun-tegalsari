@@ -5,6 +5,9 @@ $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 switch ($url) {
     case '/':
+        header("Location: /home");
+        exit;
+        break;
     case '/home':
         include 'pages/home.php';
         break;
