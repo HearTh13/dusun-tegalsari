@@ -38,6 +38,9 @@ switch ($url) {
     case '/all-images':
         include 'pages/all-images.php';
         break;
+    case '/all-products':
+        include 'pages/all-products.php';
+        break;
     default:
         http_response_code(404);
         echo "404 Not Found";

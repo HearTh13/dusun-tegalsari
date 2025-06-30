@@ -51,7 +51,7 @@ $products = mysqli_query($conn, $query);
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="row align-items-center mb-4">
                     <div class="col-auto">
-                        <h2 class="text-success"><i class="bi bi-graph-up"></i> Acara</h2>
+                        <h2 class="text-success"><i class="bi bi-calendar-event"></i> Acara</h2>
                     </div>
                     <div class="col-auto">
                         <a href="/add-event"><button class="btn btn-success">Tambah Acara +</button></a>
@@ -90,7 +90,7 @@ $products = mysqli_query($conn, $query);
     </section>
 
     <!-- Produk Lokal -->
-<section id="potensi" class="py-5 bg-light">
+    <section id="potensi" class="py-5 bg-light">
     <div class="container">
         <?php if (isset($_SESSION['user_id'])): ?>
             <div class="row align-items-center mb-4">
@@ -128,8 +128,8 @@ $products = mysqli_query($conn, $query);
 
                                 <!-- Tombol WhatsApp -->
                                 <a href="https://wa.me/<?php echo $row["phone_number"] ?>?text=Halo,%20saya%20tertarik%20dengan%20produk%20<?php echo urlencode($row['product_name']); ?>"
-                                class="btn btn-outline-success mt-auto d-flex align-items-center justify-content-center gap-2"
-                                target="_blank">
+                                    class="btn btn-outline-success mt-auto d-flex align-items-center justify-content-center gap-2"
+                                    target="_blank">
                                     <i class="bi bi-whatsapp"></i> Chat Penjual
                                 </a>
                             </div>
@@ -140,7 +140,7 @@ $products = mysqli_query($conn, $query);
 
             <div class="row mt-4">
                 <div class="col text-center">
-                    <a href="/all-events?page=1" class="btn btn-outline-success">
+                    <a href="/all-products?page=1" class="btn btn-outline-success">
                         <i class="bi bi-arrow-down-circle"></i> Lihat Lebih Banyak
                     </a>
                 </div>
@@ -184,18 +184,6 @@ $products = mysqli_query($conn, $query);
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Kontak -->
-    <section id="kontak" class="bg-light py-5">
-        <div class="container">
-        <h2 class="text-success mb-4"><i class="bi bi-telephone-fill"></i> Kontak</h2>
-        <ul class="list-unstyled">
-            <li><strong>Kepala Dusun: </strong>Bapak Suparyadi</li>
-            <li><strong>Alamat: </strong>Kelurahan Jatiayu, Kecamatan Karangmojo, Kabupaten Gunung Kidul, Provinsi DIY</li>
-            <li><strong>Email: </strong>dusuntegalsari8@gmail.com</li>
-        </ul>
         </div>
     </section>
 
