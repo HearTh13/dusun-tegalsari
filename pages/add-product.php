@@ -32,15 +32,23 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = generateUuidV4();
-        $event_name = $_POST['product_name'];
+        $product_name = $_POST['product_name'];
         $description = $_POST['description'];
         $imageTmp = $_FILES['image']['tmp_name'];
         $phone_number = $_POST["phone_number"];
+        $price = floatval($_POST["price"]);
         $owner = $_SESSION['owner'];
         $createdDateTime = date('Y-m-d H:i:s');
         $createdBy = $_SESSION['user_id'];
 
-        if (!empty($event_name) && !empty($description) && is_uploaded_file($imageTmp)) {
+        $phone_number = preg_replace('/[^0-9]/', '', $phone_number);
+
+        // Jika diawali dengan "08", ganti dengan "628"
+        if (substr($phone_number, 0, 2) === "08") {
+            $phone_number = "62" . substr($phone_number, 1);
+        }
+
+        if (!empty($product_name) && !empty($description) && is_uploaded_file($imageTmp)) {
             // Buat folder berdasarkan tahun/bulan
             $year = date('Y');
             $month = date('m');
@@ -62,18 +70,18 @@
             file_put_contents($savePath, $compressed);
 
             // Simpan ke DB (hanya path-nya)
-            $query = "INSERT INTO events (id, event_name, owner, image, description, created_date_time, created_by) 
-                    VALUES ('$id', '$event_name', '$owner', '$dbImagePath', '$description', '$createdDateTime', '$createdBy')";
-            $bool_event = mysqli_query($conn, $query);
+            $query = "INSERT INTO products (id, product_name, owner, image, phone_number, price, description, created_date_time, created_by) 
+                    VALUES ('$id', '$product_name', '$owner', '$dbImagePath', '$phone_number', '$price', '$description', '$createdDateTime', '$createdBy')";
+            $bool_product = mysqli_query($conn, $query);
 
             $query = "INSERT INTO galeries (id, image_name, owner, image, created_date_time, created_by) 
-                    VALUES ('$id', '$event_name', '$owner', '$dbImagePath', '$createdDateTime', '$createdBy')";
+                    VALUES ('$id', '$product_name', '$owner', '$dbImagePath', '$createdDateTime', '$createdBy')";
 
             $bool_image = mysqli_query($conn, $query);
 
-            if ($bool_event && $bool_image) {
+            if ($bool_product && $bool_image) {
                 $alert = '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                                Acara berhasil ditambahkan.
+                                Produk berhasil ditambahkan.
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                           </div>';
             } else {
@@ -121,22 +129,30 @@
                 <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
                     <div class="mb-3">
                         <label class="form-label">Nama Produk</label>
-                        <input type="text" name="event_name" class="form-control" required>
+                        <input type="text" name="product_name" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Deskripsi</label>
-                        <textarea name="description" class="form-control" rows="5" required></textarea>
+                        <label class="form-label">Nomor yang bisa Dihubungi</label>
+                        <input type="text" name="phone_number" class="form-control" required>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
+                        <label class="form-label">Harga</label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="number" name="price" class="form-control" step="100" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Gambar</label>
                         <input type="file" name="image" class="form-control" accept="image/*" required>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label">Nomor yang bisa Dihubungi</label>
-                        <input type="text" name="phone_number" class="form-control" required>
+                        <label class="form-label">Deskripsi</label>
+                        <textarea name="description" class="form-control" rows="5" required></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Simpan Produk</button>
