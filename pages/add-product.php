@@ -32,9 +32,10 @@
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = generateUuidV4();
-        $event_name = $_POST['event_name'];
+        $event_name = $_POST['product_name'];
         $description = $_POST['description'];
         $imageTmp = $_FILES['image']['tmp_name'];
+        $phone_number = $_POST["phone_number"];
         $owner = $_SESSION['owner'];
         $createdDateTime = date('Y-m-d H:i:s');
         $createdBy = $_SESSION['user_id'];
@@ -113,13 +114,13 @@
     <body>
         <div class="main-content">
             <div class="container">
-                <h2 class="mb-4 text-success"><i class="bi bi-plus-circle"></i> Tambah Event</h2>
+                <h2 class="mb-4 text-success"><i class="bi bi-plus-circle"></i> Tambah Produk</h2>
 
                 <?= $alert ?>
 
                 <form method="post" enctype="multipart/form-data" class="bg-light p-4 rounded shadow-sm">
                     <div class="mb-3">
-                        <label class="form-label">Nama Acara</label>
+                        <label class="form-label">Nama Produk</label>
                         <input type="text" name="event_name" class="form-control" required>
                     </div>
 
@@ -133,7 +134,12 @@
                         <input type="file" name="image" class="form-control" accept="image/*" required>
                     </div>
 
-                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Simpan Acara</button>
+                    <div class="mb-4">
+                        <label class="form-label">Nomor yang bisa Dihubungi</label>
+                        <input type="text" name="phone_number" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Simpan Produk</button>
                 </form>
             </div>
         </div>

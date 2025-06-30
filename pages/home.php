@@ -8,6 +8,9 @@ $events = mysqli_query($conn, $query);
 
 $query = "SELECT * FROM galeries ORDER BY created_date_time DESC LIMIT 6";
 $galery = mysqli_query($conn, $query);
+
+$query = "SELECT * FROM products ORDER BY created_date_time DESC LIMIT 6";
+$products = mysqli_query($conn, $query);
 ?>
 <head>
     <style>
@@ -37,8 +40,8 @@ $galery = mysqli_query($conn, $query);
     <!-- Profil -->
     <section id="profil" class="py-5 bg-success">
         <div class="container">
-        <h2 class="text-light mb-4"><i class="bi bi-info-circle-fill"></i> Profil Dusun</h2>
-        <p class="text-light">Dusun Tegalsari dihuni oleh sekitar 164 jiwa. Mayoritas penduduk bekerja sebagai petani dan penjual. Suasana alam yang sejuk serta kerukunan dan kerja sama masyarakat menjadi ciri khas utama dusun ini.</p>
+            <h2 class="text-light mb-4"><i class="bi bi-info-circle-fill"></i> Profil Dusun</h2>
+            <p class="text-light">Dusun Tegalsari dihuni oleh sekitar 164 jiwa. Mayoritas penduduk bekerja sebagai petani dan penjual. Suasana alam yang sejuk serta kerukunan dan kerja sama masyarakat menjadi ciri khas utama dusun ini.</p>
         </div>
     </section>
 
@@ -86,13 +89,57 @@ $galery = mysqli_query($conn, $query);
         </div>
     </section>
 
+    <!-- Produk Lokal -->
+    <section id="potensi" class="py-5 bg-light">
+        <div class="container">
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="row align-items-center mb-4">
+                    <div class="col-auto">
+                        <h2 class="text-success"><i class="bi bi-box-seam"></i> Produk</h2>
+                    </div>
+                    <div class="col-auto">
+                        <a href="/add-product"><button class="btn btn-success">Tambah Produk +</button></a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <h2 class="text-success mb-4"><i class="bi bi-graph-up"></i> Acara</h2>
+            <?php endif; ?>
+            <div class="row g-4">
+                <?php while ($row = mysqli_fetch_assoc($products)) { ?>
+                    <!-- <a href="detail.php?id=<?php echo $row['id']; ?>" class="text-decoration-none text-dark"> -->
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow h-100" style="max-height: 500px; min-height: 400px; overflow: hidden;">
+                            <!-- Gambar Card -->
+                            <img src="<?php echo $row['image']; ?>" class="card-img-top" alt="<?php echo $row["event_name"] ?>" style="object-fit: cover; height: 200px;">
+
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><?php echo $row["event_name"] ?></h5>
+                                <p class="card-text text-truncate-multiline">
+                                <?php echo $row["description"] ?>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- </a> -->
+                <?php } ?>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <a href="/all-events?page=1" class="btn btn-outline-success">
+                        <i class="bi bi-arrow-down-circle"></i> Lihat Lebih Banyak
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Galeri -->
     <section id="galeri" class="py-5">
         <div class="container">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="row align-items-center mb-4">
                     <div class="col-auto">
-                        <h2 class="text-success"><i class="bi bi-graph-up"></i> Foto</h2>
+                        <h2 class="text-success"><i class="bi bi-graph-up"></i> Galeri</h2>
                     </div>
                     <div class="col-auto">
                         <a href="/add-image">
@@ -108,7 +155,7 @@ $galery = mysqli_query($conn, $query);
                     <div class="col-sm-4">
                         <div class="ratio ratio-4x3 rounded shadow-sm overflow-hidden">
                             <img 
-                                src="data:image/jpeg;base64,<?php echo base64_encode($row['image']); ?>" 
+                                src="<?php echo $row['image']; ?>" 
                                 class="w-100 h-100 object-fit-cover" 
                                 alt="<?php echo $row["image_name"] ?>">
                         </div>

@@ -26,6 +26,9 @@ switch ($url) {
     case '/add-image':
         include 'pages/add-image.php';
         break;
+    case '/add-product':
+        include 'pages/add-product.php';
+        break;
     case '/all-events':
         include 'pages/all-events.php';
         break;
