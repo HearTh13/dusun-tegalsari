@@ -9,6 +9,28 @@
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
 
+    function compressImage($source, $quality = 70) {
+        $info = getimagesize($source);
+
+        if ($info['mime'] == 'image/jpeg') {
+            $image = imagecreatefromjpeg($source);
+        } elseif ($info['mime'] == 'image/png') {
+            $image = imagecreatefrompng($source);
+            // konversi ke jpeg karena png tidak bisa dikompres dengan kualitas
+            ob_start();
+            imagejpeg($image, null, $quality);
+            $compressed = ob_get_clean();
+            return $compressed;
+        } else {
+            return file_get_contents($source); // format lain, tidak diproses
+        }
+
+        ob_start();
+        imagejpeg($image, null, $quality); // simpan hasil ke buffer
+        $compressed = ob_get_clean();
+        return $compressed;
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = generateUuidV4();
         $event_name = $_POST['event_name'];
@@ -20,7 +42,7 @@
 
 
         if (!empty($event_name) && !empty($description) && is_uploaded_file($image)) {
-            $imageData = addslashes(file_get_contents($image)); // untuk simpan ke BLOB
+            $imageData = addslashes(compressImage($image)); 
             $query = "INSERT INTO events (id, event_name, owner, image, description, created_date_time, created_by) VALUES ('$id', '$event_name', '$owner', '$imageData', '$description', '$createdDateTime', '$createdBy')";
 
             if (mysqli_query($conn, $query)) {

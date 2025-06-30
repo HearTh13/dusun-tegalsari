@@ -9,6 +9,28 @@ function generateUuidV4() {
     return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 }
 
+function compressImage($source, $quality = 70) {
+    $info = getimagesize($source);
+
+    if ($info['mime'] == 'image/jpeg') {
+        $image = imagecreatefromjpeg($source);
+    } elseif ($info['mime'] == 'image/png') {
+        $image = imagecreatefrompng($source);
+        // konversi ke jpeg karena png tidak bisa dikompres dengan kualitas
+        ob_start();
+        imagejpeg($image, null, $quality);
+        $compressed = ob_get_clean();
+        return $compressed;
+    } else {
+        return file_get_contents($source); // format lain, tidak diproses
+    }
+
+    ob_start();
+    imagejpeg($image, null, $quality); // simpan hasil ke buffer
+    $compressed = ob_get_clean();
+    return $compressed;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = generateUuidV4();
     $image_name = $_POST['image_name'];
@@ -18,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $createdBy = $_SESSION['user_id'];
 
     if (!empty($image_name) && is_uploaded_file($image)) {
-        $imageData = addslashes(file_get_contents($image));
+        $imageData = addslashes(compressImage($image));
         $query = "INSERT INTO galeries (id, image_name, owner, image, created_date_time, created_by)
                   VALUES ('$id', '$image_name', '$owner', '$imageData', '$createdDateTime', '$createdBy')";
 
