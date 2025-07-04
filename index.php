@@ -44,6 +44,9 @@ switch ($url) {
     case '/all-products':
         include 'pages/all-products.php';
         break;
+    case '/maps':
+        include 'pages/maps.php';
+        break;
     default:
         http_response_code(404);
         echo "404 Not Found";
@@ -55,4 +58,39 @@ switch ($url) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <title>Dusun Tegalsari</title>
+    <style>
+        .fade-slide-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-slide-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .img-hover-zoom img {
+            transition: transform 0.4s ease;
+        }
+        .img-hover-zoom:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const animatedElements = document.querySelectorAll(".fade-slide-up");
+
+            function animateOnScroll() {
+                animatedElements.forEach(el => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight - 100) {
+                        el.classList.add("show");
+                    }
+                });
+            }
+
+            window.addEventListener("scroll", animateOnScroll);
+            animateOnScroll();
+        });
+    </script>
 </head>

@@ -26,11 +26,31 @@ $products = mysqli_query($conn, $query);
         }
     </style>
 </head>
+<div class="modal fade" id="modalGambar" tabindex="-1" aria-labelledby="modalGambarLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0">
+        <img src="../static_images/Denah Dusun Tegalsari.jpg" class="img-fluid w-100 rounded" alt="Balai Dusun Tegalsari">
+        <p class="text-white bg-dark p-2 m-0">Denah Dusun Tegalsari</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalGaleri" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body p-0">
+        <img id="modalImage" src="" class="img-fluid w-100 rounded" alt="">
+        <p id="modalCaption" class="text-white bg-dark p-2 m-0"></p>
+      </div>
+    </div>
+  </div>
+</div>
 <body>
     
     <?php include __DIR__ . '/../components/navbar.php' ?>
 
-    <section class="bg-light text-center py-5 mt-5">
+    <section class="bg-light text-center py-5 mt-5 fade-slide-up">
         <div class="container">
         <h1 class="display-5 fw-bold">Selamat Datang di Dusun Tegalsari</h1>
         <p class="lead text-muted">Kelurahan Jatiayu, Kecamatan Karangmojo, Kabupaten Gunung Kidul, Provinsi DIY</p>
@@ -38,15 +58,15 @@ $products = mysqli_query($conn, $query);
     </section>
 
     <!-- Profil -->
-    <section id="profil" class="py-5 bg-success">
+    <section id="profil" class="py-5 bg-success fade-slide-up">
         <div class="container">
             <h2 class="text-light mb-4"><i class="bi bi-info-circle-fill"></i> Profil Dusun</h2>
-            <p class="text-light">Dusun Tegalsari dihuni oleh sekitar 164 jiwa. Mayoritas penduduk bekerja sebagai petani dan penjual. Suasana alam yang sejuk serta kerukunan dan kerja sama masyarakat menjadi ciri khas utama dusun ini.</p>
+            <p class="text-light">Dusun Tegalsari dihuni oleh sekitar 164 Kartu Keluarga. Mayoritas penduduk bekerja sebagai petani dan penjual. Suasana alam yang sejuk serta kerukunan dan kerja sama masyarakat menjadi ciri khas utama dusun ini.</p>
         </div>
     </section>
 
     <!-- Acara -->
-    <section id="potensi" class="py-5 bg-light">
+    <section id="potensi" class="py-5 bg-light fade-slide-up">
         <div class="container">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="row align-items-center mb-4">
@@ -64,7 +84,7 @@ $products = mysqli_query($conn, $query);
                 <?php while ($row = mysqli_fetch_assoc($events)) { ?>
                     <!-- <a href="detail.php?id=<?php echo $row['id']; ?>" class="text-decoration-none text-dark"> -->
                     <div class="col-md-4">
-                        <div class="card border-0 shadow h-100" style="max-height: 500px; min-height: 400px; overflow: hidden;">
+                        <div class="card border-0 shadow h-100 img-hover-zoom" style="max-height: 500px; min-height: 400px; overflow: hidden;">
                             <!-- Gambar Card -->
                             <img src="<?php echo $row['image']; ?>" class="card-img-top" alt="<?php echo $row["event_name"] ?>" style="object-fit: cover; height: 200px;">
 
@@ -90,7 +110,7 @@ $products = mysqli_query($conn, $query);
     </section>
 
     <!-- Produk Lokal -->
-    <section id="potensi" class="py-5 bg-light">
+    <section id="potensi" class="py-5 bg-light fade-slide-up">
     <div class="container">
         <?php if (isset($_SESSION['user_id'])): ?>
             <div class="row align-items-center mb-4">
@@ -107,7 +127,7 @@ $products = mysqli_query($conn, $query);
             <div class="row g-4">
                 <?php while ($row = mysqli_fetch_assoc($products)) { ?>
                     <div class="col-md-4">
-                        <div class="card border-0 shadow h-100">
+                        <div class="card border-0 shadow h-100 img-hover-zoom">
                             <!-- Gambar Card -->
                             <img src="<?php echo $row['image']; ?>" 
                                 class="card-img-top" 
@@ -149,7 +169,7 @@ $products = mysqli_query($conn, $query);
     </section>
 
     <!-- Galeri -->
-    <section id="galeri" class="py-5">
+    <section id="galeri" class="py-5 fade-slide-up">
         <div class="container">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="row align-items-center mb-4">
@@ -168,11 +188,13 @@ $products = mysqli_query($conn, $query);
             <div class="row g-3">
                 <?php while ($row = mysqli_fetch_assoc($galery)) { ?>
                     <div class="col-sm-4">
-                        <div class="ratio ratio-4x3 rounded shadow-sm overflow-hidden">
-                            <img 
-                                src="<?php echo $row['image']; ?>" 
-                                class="w-100 h-100 object-fit-cover" 
-                                alt="<?php echo $row["image_name"] ?>">
+                        <div class="ratio ratio-4x3 rounded shadow-sm overflow-hidden img-hover-zoom">
+                            <a href="#" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modalGaleri" 
+                                onclick="passvar('<?php echo $row['image']; ?>', '<?php echo $row['image_name']; ?>')">
+                                <img src="<?php echo $row['image']; ?>" class="w-100 h-100 object-fit-cover" alt="<?php echo $row['image_name']; ?>">
+                            </a>
                         </div>
                     </div>
                 <?php } ?> 
@@ -185,6 +207,70 @@ $products = mysqli_query($conn, $query);
                 </div>
             </div>
         </div>
+        <script>
+            function passvar(imageUrl, imageAlt) {
+                document.getElementById('modalImage').src = imageUrl;
+                document.getElementById('modalImage').alt = imageAlt;
+                document.getElementById('modalCaption').textContent = imageAlt;
+            }
+        </script>
+    </section>
+
+    <!-- section maps -->
+    <section id="lokasi" class="py-5 bg-light fade-slide-up">
+        <div class="container">
+            <h2 class="text-success mb-4"><i class="bi bi-geo-alt-fill"></i> Lokasi Balai Dusun Tegalsari</h2>
+            <div class="row g-4">
+                <!-- Kolom Peta -->
+                <div class="col-md-6">
+                    <div id="map" style="height: 500px;"></div>
+                </div>
+
+                <!-- Kolom Gambar -->
+                <div class="col-md-6">
+                    <div class="h-100 rounded overflow-hidden shadow-sm border img-hover-zoom">
+                        <!-- Gambar bisa diklik untuk membuka modal -->
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modalGambar">
+                            <img src="../static_images/Denah Dusun Tegalsari.jpg" class="w-100 h-100 object-fit-cover" alt="Balai Dusun Tegalsari">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col text-center">
+                    <a href="/maps" class="btn btn-outline-success">
+                        <i class="bi bi-arrow-down-circle"></i> Lihat Lebih Jelas
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaflet & Routing Scripts -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+        <script>
+            // Koordinat Balai Dusun Tegalsari di Peta
+            var tujuan = L.latLng(-7.8882644, 110.6854162);
+            var map = L.map('map').setView(tujuan, 17);
+            map.panBy([300, 0]);
+
+            // Tambahkan tile peta
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Ikon pin lokasi (Balai Dusun)
+            var pinIcon = L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+
+            // Tambahkan marker Balai Dusun
+            L.marker(tujuan, { icon: pinIcon }).addTo(map).bindPopup("Balai Dusun Tegalsari");
+        </script>
     </section>
 
     <?php include __DIR__ . '/../components/footer.php'; ?>
