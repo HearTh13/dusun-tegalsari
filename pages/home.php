@@ -273,6 +273,19 @@ $products = mysqli_query($conn, $query);
         </script>
     </section>
 
+    <!-- Struktur Kepengurusan -->
+    <section id="struktur" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-success mb-4"><i class="bi bi-diagram-3"></i> Struktur Kepengurusan Dusun Tegalsari</h2>
+        <p class="mb-3">Berikut adalah susunan struktur organisasi kepengurusan Dusun Tegalsari:</p>
+        
+        <!-- Gambar Struktur Organisasi -->
+        <div class="text-center">
+        <img src="../static_images/Struktur Dusun Tegalsari.jpg" alt="Struktur Kepengurusan Dusun Tegalsari" class="img-fluid rounded shadow">
+        </div>
+    </div>
+    </section>
+
     <?php include __DIR__ . '/../components/footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
