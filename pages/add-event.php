@@ -90,7 +90,7 @@
     <head>
         <style>
             html, body {
-                padding-top: 40px;
+                padding-top: 20px;
             }
             .main-content {
                 padding-top: 90px;
@@ -108,11 +108,15 @@
                 text-align: center;
                 border-top: 1px solid #ddd;
             }
+            
         </style>
     </head>
     <body>
         <div class="main-content">
             <div class="container">
+                <a href="/home">
+                    <button class="btn mb-4 text-light bg-success" type="submit">← Kembali</button>
+                </a>
                 <h2 class="mb-4 text-success"><i class="bi bi-plus-circle"></i> Tambah Event</h2>
 
                 <?= $alert ?>

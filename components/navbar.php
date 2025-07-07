@@ -7,16 +7,22 @@
 
         <ul class="navbar-nav flex-row align-items-center me-auto">
             <li class="nav-item me-3">
-                <a class="nav-link" href="/rt1">RT 1</a>
+                <a class="nav-link" href="/home">Beranda</a>
             </li>
             <li class="nav-item me-3">
-                <a class="nav-link" href="/rt2">RT 2</a>
+                <a class="nav-link" href="/all-events">Acara</a>
             </li>
             <li class="nav-item me-3">
-                <a class="nav-link" href="/rt3">RT 3</a>
+                <a class="nav-link" href="/all-products">Produk Lokal</a>
             </li>
             <li class="nav-item me-3">
-                <a class="nav-link" href="/rt4">RT 4</a>
+                <a class="nav-link" href="/all-images">Galeri</a>
+            </li>
+            <li class="nav-item me-3">
+                <a class="nav-link" href="/maps">Denah Dusun</a>
+            </li>
+            <li class="nav-item me-3">
+                <a class="nav-link" href="/structure">Struktur Dusun</a>
             </li>
         </ul>
 

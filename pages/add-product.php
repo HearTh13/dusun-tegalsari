@@ -99,7 +99,7 @@
     <head>
         <style>
             html, body {
-                padding-top: 40px;
+                padding-top: 20px;
             }
             .main-content {
                 padding-top: 90px;
@@ -122,6 +122,9 @@
     <body>
         <div class="main-content">
             <div class="container">
+                <a href="/home">
+                    <button class="btn mb-4 text-light bg-success" type="submit">← Kembali</button>
+                </a>
                 <h2 class="mb-4 text-success"><i class="bi bi-plus-circle"></i> Tambah Produk</h2>
 
                 <?= $alert ?>

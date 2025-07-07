@@ -32,10 +32,26 @@ $result = mysqli_query($conn, $query);
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .back-button {
+            z-index: 1000;
+            background-color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #e9e9e9;
+        }
     </style>
 </head>
 <body>
     <div class="container mb-5">
+        <a href="/home">
+            <button class="back-button mb-3">← Kembali</button>
+        </a>
         <div class="row align-items-center mb-4">
             <div class="col">
                 <h2 class="text-success mb-0"><i class="bi bi-images"></i> Semua Gambar</h2>

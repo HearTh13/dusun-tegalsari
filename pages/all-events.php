@@ -32,10 +32,26 @@ $result = mysqli_query($conn, $query);
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .back-button {
+            z-index: 1000;
+            background-color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #e9e9e9;
+        }
     </style>
 </head>
 <body>
     <div class="container mb-5">
+        <a href="/home">
+            <button class="back-button mb-3">← Kembali</button>
+        </a>
         <div class="row align-items-center mb-4">
             <div class="col">
                 <h2 class="text-success mb-0"><i class="bi bi-calendar-event"></i> Semua Acara</h2>
@@ -47,15 +63,17 @@ $result = mysqli_query($conn, $query);
         <div class="row g-4">
             <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <div class="col-md-4">
-                    <div class="card border-0 shadow h-100">
-                        <img src="<?php echo $row['image']; ?>" 
-                             class="card-img-top" alt="<?php echo $row['event_name']; ?>" 
-                             style="object-fit: cover; height: 200px;">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $row['event_name']; ?></h5>
-                            <p class="card-text text-truncate"><?php echo $row['description']; ?></p>
+                    <a href="event-details?id=<?php echo $row['id']; ?>" class="text-decoration-none text-dark">
+                        <div class="card border-0 shadow h-100">
+                            <img src="<?php echo $row['image']; ?>" 
+                                class="card-img-top" alt="<?php echo $row['event_name']; ?>" 
+                                style="object-fit: cover; height: 200px;">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $row['event_name']; ?></h5>
+                                <p class="card-text text-truncate"><?php echo $row['description']; ?></p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             <?php } ?>
         </div>

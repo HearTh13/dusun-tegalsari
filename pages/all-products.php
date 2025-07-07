@@ -32,10 +32,26 @@ $result = mysqli_query($conn, $query);
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .back-button {
+            z-index: 1000;
+            background-color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background-color: #e9e9e9;
+        }
     </style>
 </head>
 <body>
     <div class="container mb-5">
+        <a href="/home">
+            <button class="back-button mb-3">← Kembali</button>
+        </a>
         <div class="row align-items-center mb-4">
             <div class="col">
                 <h2 class="text-success mb-0"><i class="bi bi-box-seam"></i> Semua Produk</h2>
@@ -47,33 +63,35 @@ $result = mysqli_query($conn, $query);
         <div class="row g-4">
             <?php while ($row = mysqli_fetch_assoc($result)) { ?>
                 <div class="col-md-4">
-                    <div class="card border-0 shadow h-100">
-                        <!-- Gambar Card -->
-                        <img src="<?php echo $row['image']; ?>" 
-                            class="card-img-top" 
-                            alt="<?php echo $row["product_name"]; ?>" 
-                            style="object-fit: cover; height: 200px;">
+                    <a href="product-details?id=<?php echo $row['id']; ?>" class="text-decoration-none text-dark">
+                        <div class="card border-0 shadow h-100">
+                            <!-- Gambar Card -->
+                            <img src="<?php echo $row['image']; ?>" 
+                                class="card-img-top" 
+                                alt="<?php echo $row["product_name"]; ?>" 
+                                style="object-fit: cover; height: 200px;">
 
-                        <!-- Isi Card -->
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <h5 class="card-title"><?php echo $row["product_name"]; ?></h5>
-                                <p class="text-success fw-semibold mb-2">
-                                    Rp<?php echo number_format($row["price"], 0, ',', '.'); ?>
-                                </p>
-                                <p class="card-text text-truncate-multiline mb-3">
-                                    <?php echo $row["description"]; ?>
-                                </p>
+                            <!-- Isi Card -->
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <h5 class="card-title"><?php echo $row["product_name"]; ?></h5>
+                                    <p class="text-success fw-semibold mb-2">
+                                        Rp<?php echo number_format($row["price"], 0, ',', '.'); ?>
+                                    </p>
+                                    <p class="card-text text-truncate-multiline mb-3">
+                                        <?php echo $row["description"]; ?>
+                                    </p>
+                                </div>
+
+                                <!-- Tombol WhatsApp -->
+                                <a href="https://wa.me/<?php echo $row["phone_number"] ?>?text=Halo,%20saya%20tertarik%20dengan%20produk%20<?php echo urlencode($row['product_name']); ?>"
+                                    class="btn btn-outline-success mt-auto d-flex align-items-center justify-content-center gap-2"
+                                    target="_blank">
+                                    <i class="bi bi-whatsapp"></i> Chat Penjual
+                                </a>
                             </div>
-
-                            <!-- Tombol WhatsApp -->
-                            <a href="https://wa.me/<?php echo $row["phone_number"] ?>?text=Halo,%20saya%20tertarik%20dengan%20produk%20<?php echo urlencode($row['product_name']); ?>"
-                                class="btn btn-outline-success mt-auto d-flex align-items-center justify-content-center gap-2"
-                                target="_blank">
-                                <i class="bi bi-whatsapp"></i> Chat Penjual
-                            </a>
                         </div>
-                    </div>
+                    </a>
                 </div>
             <?php } ?>
         </div>

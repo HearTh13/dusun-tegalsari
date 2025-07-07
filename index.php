@@ -44,8 +44,17 @@ switch ($url) {
     case '/all-products':
         include 'pages/all-products.php';
         break;
+    case '/event-details':
+        include 'pages/event-details.php';
+        break;
+    case '/product-details':
+        include 'pages/product-details.php';
+        break;
     case '/maps':
         include 'pages/maps.php';
+        break;
+    case '/structure':
+        include 'pages/structure.php';
         break;
     default:
         http_response_code(404);
